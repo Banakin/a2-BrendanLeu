@@ -25,9 +25,12 @@ const server = http.createServer( function( request,response ) {
 const handleGet = function( request, response ) {
   const filename = dir + request.url.slice( 1 ) 
 
-  if( request.url === "/" ) {
+  if ( request.url === "/" ) {
     sendFile( response, "public/index.html" )
-  }else{
+  } else if (request.url === "/api/data") {
+    response.writeHeader( 200, { "Content-Type": "application/json" })
+    response.end(JSON.stringify(appdata))
+  } else {
     sendFile( response, filename )
   }
 }
@@ -36,16 +39,16 @@ const handlePost = function( request, response ) {
   let dataString = ""
 
   request.on( "data", function( data ) {
+    console.log(data)
       dataString += data 
   })
 
   request.on( "end", function() {
-    console.log( JSON.parse( dataString ) )
+    console.log( dataString )
 
     // ... do something with the data here!!!
 
-    response.writeHead( 200, "OK", {"Content-Type": "text/plain" })
-    response.end("test")
+    sendFile( response, "public/index.html" )
   })
 }
 
@@ -71,4 +74,5 @@ const sendFile = function( response, filename ) {
    })
 }
 
+console.log(`Server is hosted at http://localhost:${process.env.PORT || port}`)
 server.listen( process.env.PORT || port )
