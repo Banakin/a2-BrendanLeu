@@ -8,31 +8,26 @@ const http = require( "http" ),
       dir  = "public/",
       port = 3000
 
-const appdata = [
-  {
-    "my_ship_name":"Earth Test Ship",
-    "my_ship_id":"US_001",
-    "opposing_ship_name":"Mars Test Ship",
-    "opposing_ship_id":"MR_001",
-    "start_month":"12",
-    "start_day":"28",
-    "start_year":"2086",
-    "start_hour":"16",
-    "start_minute":"86",
-    "end_month":"1",
-    "end_day":"3",
-    "end_year":"2087",
-    "end_hour":"3",
-    "end_minute":"57",
-    "damage_report":"One wing heavily damaged."
+const appdata = {
+  99: {
+    "my_ship_name": "Earth Test Ship",
+    "my_ship_id": "EA_001",
+    "opposing_ship_name": "Mars Test Ship",
+    "opposing_ship_id": "MR_001",
+    "start": "2086-12-30T04:51:00.000Z",
+    "end": "2087-02-02T06:03:00.000Z",
+    "minute_length": 49032,
+    "damage_report": "Left wing in critical condition."
   }
-]
+}
 
 const server = http.createServer( function( request,response ) {
   if( request.method === "GET" ) {
     handleGet( request, response )    
-  }else if( request.method === "POST" ){
+  } else if ( request.method === "POST" ){
     handlePost( request, response ) 
+  } else if( request.method === "DELETE" ){
+    handleDelete( request, response ) 
   }
 })
 
@@ -43,9 +38,6 @@ const handleGet = function( request, response ) {
     sendFile( response, "public/index.html" )
   } else if (request.url === "/api/data") {
     response.writeHeader( 200, { "Content-Type": "application/json" })
-    console.log("asdfasdfasdfasdfasdfasdf")
-    console.log(appdata)
-    console.log(JSON.stringify(appdata))
     response.end(JSON.stringify(appdata))
   } else {
     sendFile( response, filename )
@@ -56,27 +48,57 @@ const handlePost = function( request, response ) {
   let dataString = ""
 
   request.on( "data", function( data ) {
-    console.log(data)
     dataString += data 
   })
 
   request.on( "end", function() {
-    console.log( dataString )
-
     const params = new URLSearchParams(dataString);
 
-    // Iterate through all keys and values
-    appdata.push(Object.fromEntries(params))
-    // for (const [key, value] of params.entries()) {
-    //   console.log(key, value);
-    // }
-    console.log(appdata)
+    dataObj = Object.fromEntries(params);
 
+    // console.log(
+    //   {
+    //     start: `new Date(${dataObj.start_year}, ${dataObj.start_month}, ${dataObj.start_day}, ${dataObj.start_hour}, ${dataObj.start_minute});`,
+    //     end: `new Date(${dataObj.end_year}, ${dataObj.end_month}, ${dataObj.end_day}, ${dataObj.end_hour}, ${dataObj.end_minute});`,
+    //     start_obj: new Date(parseInt(dataObj.start_year), dataObj.start_month, dataObj.start_day, dataObj.start_hour, dataObj.start_minute).toLocaleString("en-US"),
+    //     end_obj: new Date(parseInt(dataObj.end_year), dataObj.end_month, dataObj.end_day, dataObj.end_hour, dataObj.end_minute)
+    //   }
+    // )
+    
+    // Make new object
+    storageObj= new Object();
+    storageObj.my_ship_name = dataObj.my_ship_name;
+    storageObj.my_ship_id = dataObj.my_ship_id;
+    storageObj.opposing_ship_name = dataObj.opposing_ship_name;
+    storageObj.opposing_ship_id = dataObj.opposing_ship_id;
+    storageObj.start = new Date(dataObj.start_year, dataObj.start_month, dataObj.start_day, dataObj.start_hour, dataObj.start_minute);
+    storageObj.end = new Date(dataObj.end_year, dataObj.end_month, dataObj.end_day, dataObj.end_hour, dataObj.end_minute);
+    storageObj.minute_length = (storageObj.end.getTime() - storageObj.start.getTime()) / (1000 * 60); // In minutes
+    storageObj.damage_report = dataObj.damage_report;
 
-    // ... do something with the data here!!!
+    if (dataObj.battle_id == "" || !dataObj.battle_id) {
+      dataObj.battle_id = Math.floor(Math.random() * 9999)
+    }
 
-    sendFile( response, "public/index.html" )
+    appdata[dataObj.battle_id] = storageObj;
+
+    sendFile( response, "public/index.html" ); // Render homepage again
   })
+}
+
+const handleDelete = function( request, response ) {
+  if (request.url.startsWith('/api/data/') && request.url.length > 10) {
+    index = request.url.substring(10)
+    
+    object = appdata[index]
+    delete appdata[index]
+
+    response.writeHeader( 200, { "Content-Type": "application/json" })
+    response.end(JSON.stringify(object))
+  } else {
+    response.writeHeader( 404 )
+    response.end( "404 Error: Endpoint" )
+  }
 }
 
 const sendFile = function( response, filename ) {
