@@ -1,19 +1,46 @@
-function fetchData() {
-    fetch('/api/data') // Replace with your target URL
-    .then(response => {
-        // Check if the request was successful (status code 200-299)
-        if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+function populateDatabase(data) {
+    table = document.getElementById("db_table") // Get table
+    table.innerHTML = "" // Clear table
+
+    // Create title block
+    title = document.createElement("tr")
+    for (const key in data[0]) {
+        title_value = document.createElement("th")
+        title_value.innerText = key
+        title.appendChild(title_value)
+    }
+    table.appendChild(title)
+
+    // Create data point blocks
+    data.forEach(element => {
+        datapoint = document.createElement("tr")
+        // Go through each key/object pair
+        for (const key in element) {
+            if (element.hasOwnProperty(key)) {
+                const value = element[key];
+
+                cell_value = document.createElement("td")
+                cell_value.innerText = value
+                datapoint.appendChild(cell_value)
+            }
         }
-        // Parse the response as JSON (or other formats like text, blob, etc.)
+        table.appendChild(datapoint)
+    });
+}
+
+function fetchData() {
+    fetch('/api/data')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         return response.json();
     })
     .then(data => {
-        // Process the retrieved data
         console.log('Data received:', data);
+        populateDatabase(data);
     })
     .catch(error => {
-        // Handle any errors that occurred during the fetch operation
         console.error('Fetch error:', error);
     });
 }

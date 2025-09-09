@@ -26,3 +26,11 @@ button, .button {
   cursor: pointer;
   margin: 10px;
 }
+
+table {
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid red;
+}

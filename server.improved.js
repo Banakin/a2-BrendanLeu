@@ -9,9 +9,23 @@ const http = require( "http" ),
       port = 3000
 
 const appdata = [
-  { "model": "toyota", "year": 1999, "mpg": 23 },
-  { "model": "honda", "year": 2004, "mpg": 30 },
-  { "model": "ford", "year": 1987, "mpg": 14} 
+  {
+    "my_ship_name":"Earth Test Ship",
+    "my_ship_id":"US_001",
+    "opposing_ship_name":"Mars Test Ship",
+    "opposing_ship_id":"MR_001",
+    "start_month":"12",
+    "start_day":"28",
+    "start_year":"2086",
+    "start_hour":"16",
+    "start_minute":"86",
+    "end_month":"1",
+    "end_day":"3",
+    "end_year":"2087",
+    "end_hour":"3",
+    "end_minute":"57",
+    "damage_report":"One wing heavily damaged."
+  }
 ]
 
 const server = http.createServer( function( request,response ) {
@@ -29,6 +43,9 @@ const handleGet = function( request, response ) {
     sendFile( response, "public/index.html" )
   } else if (request.url === "/api/data") {
     response.writeHeader( 200, { "Content-Type": "application/json" })
+    console.log("asdfasdfasdfasdfasdfasdf")
+    console.log(appdata)
+    console.log(JSON.stringify(appdata))
     response.end(JSON.stringify(appdata))
   } else {
     sendFile( response, filename )
@@ -40,11 +57,21 @@ const handlePost = function( request, response ) {
 
   request.on( "data", function( data ) {
     console.log(data)
-      dataString += data 
+    dataString += data 
   })
 
   request.on( "end", function() {
     console.log( dataString )
+
+    const params = new URLSearchParams(dataString);
+
+    // Iterate through all keys and values
+    appdata.push(Object.fromEntries(params))
+    // for (const [key, value] of params.entries()) {
+    //   console.log(key, value);
+    // }
+    console.log(appdata)
+
 
     // ... do something with the data here!!!
 
