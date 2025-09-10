@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer">
 
     <!-- get rid of favicon error -->
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
@@ -24,21 +24,21 @@
         <h2>My Ship Info:</h2>
         <p>
           <label for="ship_name">Ship Name:</label>
-          <input type="text" name="my_ship_name" placeholder="Ship Name">
+          <input type="text" name="my_ship_name" id="my_ship_name" placeholder="Ship Name">
           <label for="ship_id">Ship ID Number:</label>
-          <input type="text" name="my_ship_id" placeholder="XX_XXX">
+          <input type="text" name="my_ship_id" id="my_ship_id" placeholder="XX_XXX">
         </p>
         <h2>Opposing Force's Info:</h2>
         <p>
           <label for="ship_name">Ship Name:</label>
-          <input type="text" name="opposing_ship_name" placeholder="Ship Name">
+          <input type="text" name="opposing_ship_name" id="opposing_ship_name" placeholder="Ship Name">
           <label for="ship_id">Ship ID Number:</label>
-          <input type="text" name="opposing_ship_id" placeholder="XX_XXX">
+          <input type="text" name="opposing_ship_id" id="opposing_ship_id" placeholder="XX_XXX">
         </p>
         <h2>Summary Info:</h2>
         <p>
           <label for="start_month">Start:</label>
-          <select name="start_month">
+          <select name="start_month" id="start_month">
             <option value="0" selected>*month*</option>
             <option value="0">1 - January</option>
             <option value="1">2 - February</option>
@@ -53,7 +53,7 @@
             <option value="10">11 - November</option>
             <option value="11">12 - December</option>
           </select>
-          <select name="start_day">
+          <select name="start_day" id="start_day">
             <option value="0" selected>*day*</option>
             <option value="1">1</option>
             <option value="2">2</option>
@@ -87,7 +87,7 @@
             <option value="30">30</option>
             <option value="31">31</option>
           </select>
-          <select name="start_year">
+          <select name="start_year" id="start_year">
             <option value="2085">2085</option>
             <option value="2086">2086</option>
             <option value="2087" selected>2087</option>
@@ -95,7 +95,7 @@
             <option value="2089">2089</option>
           </select>
           (
-          <select name="start_hour">
+          <select name="start_hour" id="start_hour">
             <option value="0" selected>*hour*</option>
             <option value="0">0</option>
             <option value="1">1</option>
@@ -123,7 +123,7 @@
             <option value="23">23</option>
           </select>
           :
-          <select name="start_minute">
+          <select name="start_minute" id="start_minute">
             <option value="0" selected>*minute*</option>
             <option value="0">00</option>
             <option value="1">01</option>
@@ -190,7 +190,7 @@
         </p>
         <p>
           <label for="end_month">End:</label>
-          <select name="end_month">
+          <select name="end_month" id="end_month">
             <option value="0" selected>*month*</option>
             <option value="0">1 - January</option>
             <option value="1">2 - February</option>
@@ -205,7 +205,7 @@
             <option value="10">11 - November</option>
             <option value="11">12 - December</option>
           </select>
-          <select name="end_day">
+          <select name="end_day" id="end_day">
             <option value="0" selected>*day*</option>
             <option value="1">1</option>
             <option value="2">2</option>
@@ -239,7 +239,7 @@
             <option value="30">30</option>
             <option value="31">31</option>
           </select>
-          <select name="end_year">
+          <select name="end_year" id="end_year">
             <option value="2085">2085</option>
             <option value="2086">2086</option>
             <option value="2087" selected>2087</option>
@@ -247,7 +247,7 @@
             <option value="2089">2089</option>
           </select>
           (
-          <select name="end_hour">
+          <select name="end_hour" id="end_hour">
             <option value="0" selected>*hour*</option>
             <option value="0">0</option>
             <option value="1">1</option>
@@ -275,7 +275,7 @@
             <option value="23">23</option>
           </select>
           :
-          <select name="end_minute">
+          <select name="end_minute" id="end_minute">
             <option value="0" selected>*minute*</option>
             <option value="0">00</option>
             <option value="1">01</option>
@@ -342,7 +342,7 @@
         </p>
         <p>
           <h2>Damage Report:</h2>
-          <textarea name="damage_report" rows="7" cols="40" placeholder="begin damage report..."></textarea> 
+          <textarea name="damage_report" id="damage_report" rows="7" cols="40" placeholder="begin damage report..."></textarea> 
         </p>
         <button>Submit Log Entry</button>
       </form>
